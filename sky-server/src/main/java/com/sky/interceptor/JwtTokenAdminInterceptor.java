@@ -15,6 +15,13 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * jwt令牌校验的拦截器
+ *1
+     * 创建一个类并实现HandlerInterceptor接口，
+     * 实现preHandle、postHandle和afterCompletion这
+     * 三个方法中的一个或多个，
+     * 具体取决于你想要拦截的时机。
+ * 2
+     * 配置拦截器，告诉Spring MVC哪些请求需要被这个拦截器拦截。
  */
 @Component
 @Slf4j

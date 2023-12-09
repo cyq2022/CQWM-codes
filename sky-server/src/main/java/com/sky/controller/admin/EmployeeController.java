@@ -3,8 +3,10 @@ package com.sky.controller.admin;
 import com.sky.constant.JwtClaimsConstant;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
+import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
 import com.sky.properties.JwtProperties;
+import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.EmployeeService;
 import com.sky.utils.JwtUtil;
@@ -92,5 +94,24 @@ public class EmployeeController {
         log.info("EmployeeDTO :{}",employeeDTO);
         employeeService.save(employeeDTO);
         return Result.success();
+    }
+
+
+    /**
+     *
+     * 前端请求格式是 query请求参数  ， 正常用dto接受即可， 请求体需要用responsebody
+     * 分页数据封装到PageResult中
+     *
+     * @param employeePageQueryDTO
+     * @return
+     */
+    @GetMapping("/page")
+    @ApiOperation(value = "员工分页查询")
+    public Result<PageResult> page(EmployeePageQueryDTO employeePageQueryDTO){
+        log.info("分页查询参数：{}",employeePageQueryDTO);
+        PageResult pageResult = employeeService.pageQuery(employeePageQueryDTO);
+        Result<PageResult> success = Result.success(pageResult);
+        success.setMsg("分页查询成功");
+        return success;
     }
 }

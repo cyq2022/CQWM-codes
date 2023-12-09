@@ -1,10 +1,13 @@
 package com.sky.config;
 
 import com.sky.interceptor.JwtTokenAdminInterceptor;
+import com.sky.json.JacksonObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
@@ -15,10 +18,23 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
+import java.util.List;
+
 /**
  * 配置类，注册web层相关组件
+ *
+     * 在Spring框架中，WebMvcConfigurationSupport类是用来扩展Spring MVC配置的一个重要类。
+     * 通过继承WebMvcConfigurationSupport类，
+     * 你可以自定义Spring MVC的配置，包
+     * 括添加拦截器、消息转换器、视图解析器等。
  */
 @Configuration
+/**
+ * 通过在一个类上添加@Configuration注解，你可以将这个类标识为配置类，
+ * 告诉Spring容器在启动时要扫描这个类，并处理其中的Bean定义。
+ * 这样，你就可以在这个配置类中定义拦截器，
+ * 并通过其他配置类（比如实现WebMvcConfigurer接口的配置类）来注册这些拦截器。
+ */
 @Slf4j
     public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
@@ -66,5 +82,22 @@ import springfox.documentation.spring.web.plugins.Docket;
         log.info("开始设置静态资源映射... ... ");
         registry.addResourceHandler("/doc.html").addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+    }
+
+
+    /**
+     *  消息转换器创建
+     * @param converters
+     */
+    @Override
+    protected void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+        log.info("开始注册自己的消息转换器。。。。。。");
+        // 创建消息转换器对象
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        // 需要为消息转换器设置一个对象转换器，对象转换器可以将Java对象序列化为Json数据
+        converter.setObjectMapper(new JacksonObjectMapper()); // 自定义对象映射器
+        // 将自己的消息转化器加入容器中
+        // 优先使用自己的消息转换器
+        converters.add(0,converter);
     }
 }
