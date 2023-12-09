@@ -1,6 +1,7 @@
 package com.sky.mapper;
 
 import com.github.pagehelper.Page;
+import com.sky.annotation.AutoFill;
 import com.sky.enumeration.OperationType;
 import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
@@ -13,9 +14,16 @@ import java.util.List;
 public interface CategoryMapper {
 
     /**
+     *  公共字段自动填充
+     *  自定义注解添加在 insert update 方法上  实现被切面通知
+     */
+
+
+    /**
      * 插入数据
      * @param category
      */
+    @AutoFill(value = OperationType.INSERT)
     @Insert("insert into category(type, name, sort, status, create_time, update_time, create_user, update_user)" +
             " VALUES" +
             " (#{type}, #{name}, #{sort}, #{status}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser})")
@@ -39,6 +47,7 @@ public interface CategoryMapper {
      * 根据id修改分类
      * @param category
      */
+    @AutoFill(value = OperationType.UPDATE)
     void update(Category category);
 
     /**
