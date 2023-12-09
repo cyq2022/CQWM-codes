@@ -98,7 +98,7 @@ public class EmployeeController {
 
 
     /**
-     *
+     *  员 工分页查询
      * 前端请求格式是 query请求参数  ， 正常用dto接受即可， 请求体需要用responsebody
      * 分页数据封装到PageResult中
      *
@@ -113,5 +113,20 @@ public class EmployeeController {
         Result<PageResult> success = Result.success(pageResult);
         success.setMsg("分页查询成功");
         return success;
+    }
+
+
+    /**
+     *  启用禁用 员工账号
+     * @param status 状态 1 启用 0 禁用
+     * @param id 用户id
+     * @return
+     */
+    @ApiOperation(value = "启用禁用 员工账号")
+    @PostMapping("/status/{status}")
+    public Result startOrStop(@PathVariable("status") Integer status , Long id){
+        log.info("启用禁用员工账号：{},{}",status,id);
+        employeeService.startOrStop(status,id);
+        return Result.success();
     }
 }

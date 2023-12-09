@@ -120,6 +120,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         return new PageResult(page.getTotal(),page.getResult());
 
     }
+
+
 //    @Override
 //    public PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
 //
@@ -133,5 +135,27 @@ public class EmployeeServiceImpl implements EmployeeService {
 //
 //        return pageResult;
 //    }
+
+
+    /**
+     * 启用禁用员工账号业务
+     * 动态更新
+     * @param status
+     * @param id
+     */
+    @Override
+    public void startOrStop(Integer status, Long id) {
+        //为了 update 通用性 让update 操作 实体类
+        //为了提升update的复用性，根据传入的数据进行动态sql。最坏的情况肯定是修改所有参数
+
+
+
+        Employee employee = Employee.builder()  // 风格
+                .status(status)
+                .id(id)
+                .build();
+
+        employeeMapper.update(employee);
+    }
 
 }
