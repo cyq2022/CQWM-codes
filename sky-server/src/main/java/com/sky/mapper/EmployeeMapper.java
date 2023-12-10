@@ -28,7 +28,7 @@ public interface EmployeeMapper {
     Employee getByUsername(String username);
 
 
-    @AutoFill(value = OperationType.INSERT)
+    @AutoFill(OperationType.INSERT)
     @Insert("insert into employee " +
             "(name, username, password, phone, sex, id_number, create_time, update_time, create_user, update_user)" +
             "values" +
@@ -50,7 +50,7 @@ public interface EmployeeMapper {
      * 动态修改对象属性
      * @param employee
      */
-    @AutoFill(value = OperationType.UPDATE)
+    @AutoFill(OperationType.UPDATE)
     void update(Employee employee);
 
 

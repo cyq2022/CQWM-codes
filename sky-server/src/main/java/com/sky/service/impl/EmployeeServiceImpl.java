@@ -86,8 +86,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         // 常量类， 表示状态StatusConstant
         employee.setStatus(StatusConstant.ENABLE);
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
+//        employee.setCreateTime(LocalDateTime.now());
+//        employee.setUpdateTime(LocalDateTime.now());
         // PasswordConstant.DEFAULT_PASSWORD 密码123456
         employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
 
@@ -97,8 +97,8 @@ public class EmployeeServiceImpl implements EmployeeService {
          */
         // 设置创建人
         // 设置创建人 修改人
-        employee.setCreateUser(BaseContext.getCurrentId());
-        employee.setUpdateUser(BaseContext.getCurrentId());
+//        employee.setCreateUser(BaseContext.getCurrentId());
+//        employee.setUpdateUser(BaseContext.getCurrentId());
 
         employeeMapper.insert(employee);
     }

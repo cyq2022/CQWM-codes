@@ -11,6 +11,8 @@
         </foreach>
     </insert>
 
+
+
     <delete id="deleteByDishIds">
         delete from dish_flavor where dish_id in
         <foreach collection="dishIds" item="dishIds" open="(" separator="," close=")">
