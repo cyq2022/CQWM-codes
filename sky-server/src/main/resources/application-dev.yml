@@ -6,3 +6,9 @@ sky:
     database: sky_take_out
     username: root
     password: cyq
+
+  alioss:
+    endpoint: oss-cn-beijing.aliyuncs.com
+    access-key-id: LTAI5tFhdX9VaBNry4Xm7Lz5
+    access-key-secret: 44Yj6FH9cjMZEaTroXHQYxFhEmYLlS
+    bucket-name: cyq-bucket-20231209
