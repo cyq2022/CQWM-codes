@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -157,5 +156,21 @@ public class DishServiceImpl implements DishService {
             dishFlavorsMapper.deleteByDishId(flavor.getDishId()); // 删除
         }
         dishFlavorsMapper.insertBatch(dishFlavors);
+    }
+
+    /**
+     * 根据菜品分类id 查询菜品
+     *
+     * @param categoryId
+     * @return
+     */
+    @Override
+    public List<Dish> list(Long categoryId) {
+        // 显示在售的
+        Dish dish = Dish.builder()
+                .status(StatusConstant.ENABLE)
+                .categoryId(categoryId)
+                .build();
+        return dishMapper.list(dish);
     }
 }
