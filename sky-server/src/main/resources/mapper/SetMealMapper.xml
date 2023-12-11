@@ -10,6 +10,12 @@
         values (#{categoryId}, #{name}, #{price}, #{status}, #{description}, #{image}, #{createTime}, #{updateTime},
                 #{createUser}, #{updateUser})
     </insert>
+    <delete id="deleteBySetmealIds">
+        delete from setmeal where id in
+        <foreach collection="ids" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
 
     <select id="select" resultType="com.sky.vo.SetmealVO">
         select s.*,c.name as categoryName from setmeal s left join category c on

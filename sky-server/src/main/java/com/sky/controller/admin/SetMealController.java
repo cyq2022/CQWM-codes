@@ -9,8 +9,11 @@ import com.sky.service.SetMealService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @Api(tags = "套餐接口")
@@ -44,5 +47,16 @@ public class SetMealController {
     public Result<PageResult> page(SetmealPageQueryDTO setmealPageQueryDTO){
         PageResult pageResult = setMealService.pageQuery(setmealPageQueryDTO);
         return Result.success(pageResult);
+    }
+
+    /**
+     * 套餐批量删除接口
+     * @return
+     */
+    @ApiOperation("套餐批量删除接口")
+    @DeleteMapping()
+    public Result delete(@RequestParam List<Long> ids){
+        setMealService.deleteBatch(ids);
+        return Result.success();
     }
 }
