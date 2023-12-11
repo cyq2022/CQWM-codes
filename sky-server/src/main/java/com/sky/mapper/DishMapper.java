@@ -66,5 +66,13 @@ public interface DishMapper {
     void update(Dish dish);
 
     //@Select("select * from dish where category_id = #{categoryId}")
+
+    /**
+     * 根据dish条件查询返回dish集合
+     * @param dish
+     * @return
+     */
     List<Dish> list(Dish dish);
+
+
 }
