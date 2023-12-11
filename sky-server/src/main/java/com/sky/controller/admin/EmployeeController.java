@@ -47,6 +47,8 @@ public class EmployeeController {
 
         Employee employee = employeeService.login(employeeLoginDTO);
 
+        //log.info("查询返回的employee{}",employee);
+
         //登录成功后，生成jwt令牌
         Map<String, Object> claims = new HashMap<>();
         claims.put(JwtClaimsConstant.EMP_ID, employee.getId());
@@ -61,7 +63,7 @@ public class EmployeeController {
                 .name(employee.getName())
                 .token(token)
                 .build();
-
+        //log.info("employeeLoginVO:{}",employeeLoginVO);
         return Result.success(employeeLoginVO);
     }
 

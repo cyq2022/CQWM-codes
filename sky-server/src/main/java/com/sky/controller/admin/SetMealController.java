@@ -2,6 +2,8 @@ package com.sky.controller.admin;
 
 
 import com.sky.dto.SetmealDTO;
+import com.sky.dto.SetmealPageQueryDTO;
+import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.SetMealService;
 import io.swagger.annotations.Api;
@@ -30,5 +32,17 @@ public class SetMealController {
     public Result saveWithDish(@RequestBody SetmealDTO setmealDTO){
         setMealService.saveWithDish(setmealDTO);
         return Result.success();
+    }
+
+    /**
+     * 套餐分页查询
+     * @param setmealPageQueryDTO
+     * @return
+     */
+    @ApiOperation("套餐分页显示接口")
+    @GetMapping("/page")
+    public Result<PageResult> page(SetmealPageQueryDTO setmealPageQueryDTO){
+        PageResult pageResult = setMealService.pageQuery(setmealPageQueryDTO);
+        return Result.success(pageResult);
     }
 }

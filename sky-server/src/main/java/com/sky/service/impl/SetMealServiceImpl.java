@@ -1,11 +1,16 @@
 package com.sky.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.sky.dto.SetmealDTO;
+import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Setmeal;
 import com.sky.entity.SetmealDish;
 import com.sky.mapper.SetmealDishMapper;
 import com.sky.mapper.SetmealMapper;
+import com.sky.result.PageResult;
 import com.sky.service.SetMealService;
+import com.sky.vo.SetmealVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -47,5 +53,25 @@ public class SetMealServiceImpl implements SetMealService {
         }
         log.info("setmealList: {} ",setmealList);
         setmealDishMapper.insertBatch(setmealList);
+    }
+
+    /**
+     * 套餐分页查询
+     * @param setmealPageQueryDTO
+     * @return
+     */
+    @Override
+    public PageResult pageQuery(SetmealPageQueryDTO setmealPageQueryDTO) {
+        // 使用插件pagehelper
+        PageHelper.startPage(setmealPageQueryDTO.getPage(),setmealPageQueryDTO.getPageSize());
+        Setmeal setmeal = new Setmeal();
+        BeanUtils.copyProperties(setmealPageQueryDTO,setmeal);
+        //TODO 可以把dto拷贝到setmeal对象
+        // 查询数据
+        log.info("传入setmealPageQueryDTO：{}",setmealPageQueryDTO);
+        Page<SetmealVO> page = setmealMapper.select(setmeal);
+
+        PageResult pageResult = new PageResult(page.getTotal(), page.getResult());
+        return pageResult;
     }
 }
