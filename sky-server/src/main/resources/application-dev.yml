@@ -7,6 +7,7 @@ sky:
     username: root
     password: cyq
 
+
   alioss:
     endpoint: oss-cn-beijing.aliyuncs.com
     access-key-id: LTAI5tFhdX9VaBNry4Xm7Lz5
@@ -18,3 +19,7 @@ sky:
     port: 6379
     auth: cyq
     database: 1
+
+  wechat:
+    appid: wxf07d0dfab5503697
+    secret: 6c4dc2101740033ab39864a6c986ed2b
