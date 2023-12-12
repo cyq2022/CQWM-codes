@@ -12,3 +12,9 @@ sky:
     access-key-id: LTAI5tFhdX9VaBNry4Xm7Lz5
     access-key-secret: 44Yj6FH9cjMZEaTroXHQYxFhEmYLlS
     bucket-name: cyq-bucket-20231209
+
+  redis:
+    host: localhost
+    port: 6379
+    auth: cyq
+    database: 1
