@@ -1,8 +1,10 @@
 package com.sky.controller.admin;
 
 
+import com.sky.constant.StatusConstant;
 import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
+import com.sky.entity.Setmeal;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.SetMealService;
@@ -10,8 +12,9 @@ import com.sky.vo.SetmealVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,6 +36,7 @@ public class SetMealController {
      */
     @ApiOperation(value = "新增套餐方法")
     @PostMapping
+    @CacheEvict(cacheNames = "setmealCache",key = "#setmealDTO.categoryId")  // 清空缓存
     public Result saveWithDish(@RequestBody SetmealDTO setmealDTO){
         setMealService.saveWithDish(setmealDTO);
         return Result.success();
@@ -56,6 +60,7 @@ public class SetMealController {
      */
     @ApiOperation("套餐批量删除接口")
     @DeleteMapping()
+    @CacheEvict(cacheNames = "setmealCache",allEntries = true) // 清空缓存
     public Result delete(@RequestParam List<Long> ids){
         setMealService.deleteBatch(ids);
         return Result.success();
@@ -79,6 +84,7 @@ public class SetMealController {
      */
     @ApiOperation("修改套餐")
     @PutMapping
+    @CacheEvict(cacheNames = "setmealCache",allEntries = true) // 清空缓存
     public Result update(@RequestBody SetmealDTO setmealDTO){
         setMealService.update(setmealDTO);
         return Result.success();
@@ -88,10 +94,12 @@ public class SetMealController {
      * 起售停售套餐
      */
     @PostMapping("/status/{status}")
-    @ApiOperation(value = "起售或者停售")
+    @CacheEvict(cacheNames = "setmealCache",allEntries = true) // 清空缓存
+    @ApiOperation(value     = "起售或者停售")
     public Result startOrStop(@PathVariable(value = "status") Integer status, Long id){
         log.info("ID ::::{}",id);
         setMealService.startOrStop(status,id);
         return Result.success();
     }
+
 }
