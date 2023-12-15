@@ -1,10 +1,12 @@
 package com.sky.service.impl;
 
+import com.sky.dto.GoodsSalesDTO;
 import com.sky.entity.Orders;
 import com.sky.mapper.OrderMapper;
 import com.sky.mapper.UserMapper;
 import com.sky.service.ReportService;
 import com.sky.vo.OrderReportVO;
+import com.sky.vo.SalesTop10ReportVO;
 import com.sky.vo.TurnoverReportVO;
 import com.sky.vo.UserReportVO;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -182,6 +185,8 @@ public class ReportServiceImpl implements ReportService {
                 .build();
     }
 
+
+
     private Integer getOrderCount(LocalDateTime begin, LocalDateTime end,Integer status) {
 
         Map map = new HashMap();
@@ -189,6 +194,52 @@ public class ReportServiceImpl implements ReportService {
         map.put("end",end);
         map.put("status",status);
         return orderMapper.countByMap(map);
+    }
+
+    /**
+     * 销量top10 包括菜品和套餐
+     * @return
+     */
+    @Override
+    public SalesTop10ReportVO getSalesTop10(LocalDate begin, LocalDate end) {
+
+        LocalDateTime beginTime = LocalDateTime.of(begin, LocalTime.MIN);
+        LocalDateTime endTime = LocalDateTime.of(end, LocalTime.MAX);
+        List<GoodsSalesDTO> goodsSalesDTOList = orderMapper.getSalesTop10(beginTime, endTime);
+
+
+
+        List<String> namelist = goodsSalesDTOList.stream().map(x -> x.getName()).collect(Collectors.toList());
+        String nameList = StringUtils.join(namelist, ",");
+        List<Integer> numberlist = goodsSalesDTOList.stream().map(x -> x.getNumber()).collect(Collectors.toList());
+        String numberList = StringUtils.join(numberlist, ",");
+        //静态方法引用：
+        //语法：ClassName::staticMethodName
+        //示例：Math::abs引用了Math类的静态方法abs。
+        //
+        //实例方法引用：
+        //语法：instance::instanceMethodName
+        //示例：String::length引用了String类的实例方法length。
+        //
+        //类的任意对象方法引用：
+        //语法：ClassName::instanceMethodName
+        //示例：List::size引用了List类的实例方法size。
+        //
+        //构造函数引用：
+        //语法：ClassName::new
+        //示例：ArrayList::new引用了ArrayList的构造函数。
+        /**
+         *     //商品名称列表，以逗号分隔，例如：鱼香肉丝,宫保鸡丁,水煮鱼
+         *     private String nameList;
+
+         *     //销量列表，以逗号分隔，例如：260,215,200
+         *     private String numberList;
+         */
+
+        return SalesTop10ReportVO.builder()
+                .nameList(nameList)
+                .numberList(numberList)
+                .build();
     }
 
 }
